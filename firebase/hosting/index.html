@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+  <meta name="viewport" content="width=device-width, minimum-scale=0.1">
+  <title>Welcome to Firebase Hosting</title>
+
+  <!-- update the version number as needed -->
+  <script defer src="/__/firebase/5.9.1/firebase-app.js"></script>
+  <!-- include only the Firebase features as you need -->
+  <script defer src="/__/firebase/5.9.1/firebase-auth.js"></script>
+  <script defer src="/__/firebase/5.9.1/firebase-database.js"></script>
+  <script defer src="/__/firebase/5.9.1/firebase-messaging.js"></script>
+  <script defer src="/__/firebase/5.9.1/firebase-storage.js"></script>
+  <!-- initialize the SDK after all desired features are loaded -->
+  <script defer src="/__/firebase/init.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/5.9.1/firebase.js"></script>
+  <style media="screen">
+    body {
+      background: #ECEFF1;
+      color: rgba(0, 0, 0, 0.87);
+      font-family: Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    h1 {
+      text-align: center;
+    }
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      bottom: 0;
+      left: 0;
+      margin: auto;
+      overflow: auto;
+      position: fixed;
+      right: 0;
+      top: 0;
+    }
+
+    #bg {
+      -webkit-user-select: none;
+      cursor: zoom-in;
+    }
+
+    .container {
+      width: 100%;
+      text-align: center;
+      vertical-align: middle;
+      height: 100%;
+    }
+
+
+    @media (max-width: 600px) {
+
+      body,
+      #message {
+        margin-top: 0;
+        background: white;
+        box-shadow: none;
+      }
+
+      body {
+        border-top: 16px solid #ffa100;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <img src="" alt="">
+  <div>
+    <h1 id="company"></h1>
+  </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      try {
+        let app = firebase.app();
+        let features = ['auth', 'database', 'messaging', 'storage'].filter(feature => typeof app[feature] === 'function');
+        // document.getElementById('load').innerHTML = `Firebase SDK loaded with ${features.join(', ')}`;
+      } catch (e) {
+        console.error(e);
+        // document.getElementById('load').innerHTML = 'Error loading the Firebase SDK, check the console.';
+      }
+    });
+
+    var config = {
+      apiKey: "",
+      authDomain: "",
+      databaseURL: "",
+      projectId: "",
+      storageBucket: "",
+      messagingSenderId: ""
+    };
+    firebase.initializeApp(config);
+
+    // Get a reference to the database service
+    var database = firebase.database();
+    // Get element from the DOM
+    const companyElement = document.getElementById('company');
+    const companyRef = database.ref('CurrentShowCompany');
+    const companyHistoryRef = database.ref('HistoryOfCalledCompany');
+    const storageRef = firebase.storage().ref();
+
+
+    // 현재 출력회사 정보가 변경되는 경우
+    companyRef.on('value', function (snapshot) {
+      let companyname = snapshot.val();
+
+      setTimeout(function () {
+
+        // 회사명 출력   
+        companyElement.innerHTML = companyname;
+
+        // load image
+        var storageRef = firebase.storage().ref();
+        storageRef.child(`company/${companyname}.png`).getDownloadURL().then((url) => {
+          let imgPath = url;
+          document.querySelector('img').src = imgPath;
+        })
+      }, 2000);
+
+    }).then(() => {
+      //기본 설정
+      companyElement.innerHTML = '소셜캠퍼스 온에 오신걸 환영합니다.';
+      storageRef.child(`company/socialcampuson.jpg`).getDownloadURL().then((url) => {
+        let imgPath = url;
+        console.log(imgPath);
+        document.querySelector('img').src = imgPath;
+      })
+    })
+
+  </script>
+</body>
+
+</html>

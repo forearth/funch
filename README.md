@@ -21,7 +21,7 @@ Left, Right 펀치 카운트 세기
 What things you need to install the software and how to install them
 
 ```
-Give examples
+npm install firebase-functions firebase-admin express
 ```
 
 ### Installing
