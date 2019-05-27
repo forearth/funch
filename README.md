@@ -10,6 +10,8 @@ Left, Right 펀치 카운트 세기
 디바이스 : 탭볼이 글러브에 맞는 것을 파악하기 위한 것으로 글러브로 탭볼을 치면 데이터를 보낸다. 
 무선통신 모듈 : NodeMCU, 센서 : 압력센서
 
+![funch system structure](https://github.com/forearth/funch/raw/img/funch_system.png)
+
 
 ## Getting Started
 
